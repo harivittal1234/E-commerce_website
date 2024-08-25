@@ -14,7 +14,7 @@ app.use(cors());
 // by this, the frontend reactjs project will be connected to exoress app on 4000 port.
 
 //DataBase Connection with MongoDB
-mongoose.connect("mongodb+srv://harivittal4321:4321%40Irah@ecom.ialimgv.mongodb.net/Ecom")
+mongoose.connect("your api key here")
 //If the password or the username contain any of {https://docs.mongodb.com/manual/reference/connection-string/#examples} these "$ : / ? # [ ] @", then 
 //they should be put through percent encoding. 
 
