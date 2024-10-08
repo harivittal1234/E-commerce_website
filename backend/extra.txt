@@ -1,4 +1,5 @@
 await: function used to save data in db as it'll always take a bit of time to savedata on db.
+await is used as an asynchronous methos
 to upload data to db:1.create schema, 2.create endpoint
 to remove data: create yet another endpoint
 "Commas are very very very evry important"

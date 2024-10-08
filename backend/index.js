@@ -9,6 +9,20 @@ const cors = require("cors");
 const { type } = require("os");
 const { error } = require("console");
 
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+require('dotenv').config();
+
+
+// Configuration
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+
+});
+
 app.use(express.json());
 app.use(cors());
 // by this, the frontend reactjs project will be connected to exoress app on 4000 port.
@@ -19,29 +33,43 @@ mongoose.connect("mongodb+srv://harivittal4321:4321%40Irah@ecom.ialimgv.mongodb.
 //they should be put through percent encoding. 4321@Irah will be 4321%40Irah
 
 //API Creation 
-app.get("/",(req,res) => {
+
+app.get('/',(req,res) => {
     res.send("Express App is running")
 })
 
 // we'll create multiple endpoints on the same api. for login,all products etc.
 //Image Storage Engine
-
+/*
 const storage = multer.diskStorage({ //this is middleware
     destination: './upload/images',
     filename: (req,file,cb) => {
         return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
-}) //2. This middleware will rename the image with the above {${file.fieldname}_${Date.now()}${path.extname(file.originalname)}}
+})  //2. This middleware will rename the image with the above {${file.fieldname}_${Date.now()}${path.extname(file.originalname)}}
+*/
+//Storage Cloudinary instead of disk storage
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'images', // Optional: folder name in Cloudinary
+        format: async (req, file) => 'png', // Image format (e.g., 'jpg', 'png')
+        public_id: (req, file) => file.fieldname + '_' + Date.now() // Unique file name
+    }
+});
 
 const upload=multer({storage:storage})
 // Creating Upload
 app.use('/images',express.static('upload/images')) //will get imagesfolder at /images endpoint
+
+/*
 app.post("/upload",upload.single('Product'), (req,res)=>{ //any image we use, will upload at this ep 
     res.json({
         success:1,
         image_url:`http://localhost:${port}/images/${req.file.filename}`
     })
 }) 
+*/
 //1.our image will be uploaded using the post method in this endpoint
 //3.That image will be stored in this images folder
 //4. After that, we will get the name of the image uploaded to images folder using 'req'
@@ -51,6 +79,14 @@ app.post("/upload",upload.single('Product'), (req,res)=>{ //any image we use, wi
 
 //Adding ep to add objects to mongodb...Schema for creating products...
 //Product is the schema of the database
+
+app.post("/upload",upload.single('Product'), (req,res)=>{ //any image we use, will upload at this ep 
+    res.json({
+        success:1,
+        image_url: req.file.path
+    })
+}) 
+
 const Product = mongoose.model("Product",{
     id:{
         type: Number,
@@ -90,9 +126,7 @@ app.post('/addproduct',async (req,res) => {
     let products = await Product.find({});
     let id;
     if(products.length>0){
-        let last_product_array=products.slice(-1);
-        let last_product = last_product_array[0];
-        id = last_product.id+1;
+        id=products.slice(-1)[0].id+1; //New changes by Hari
     }
     else{
         id=1;
@@ -132,7 +166,7 @@ app.get('/allproducts',async(req,res) => {
     res.send(products);
 })
 
-//Shema creating for User model
+//Schema creating for User model
 
 const Users = mongoose.model('Users',{
     name:{
@@ -218,6 +252,7 @@ app.get('/newcollection',async (req,res) => {
 
 //Creating endpoint for popular in woman section
 ///////////////////////////////////////////
+
 app.get('/popularwoman', async(req,res) => {
     let products = await Product.find({category:"women"});
 
