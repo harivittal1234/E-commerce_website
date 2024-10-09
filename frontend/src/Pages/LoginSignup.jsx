@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const LoginSignup = () => {
 
-    const [state,setstate] = useState("Sign Up"); //State variable initialized with "Login" string.
+    const [state,setstate] = useState("Sign Up"); //State variable initialized with "Sign Up" string.
     const [formData,setformData] = useState({
       username:"",
       password:"",
@@ -25,7 +25,7 @@ const LoginSignup = () => {
         'Content-Type' : 'application/json',
       },
       body: JSON.stringify(formData),
-    }).then((response)=>response.json()).then((data) => responseData=data)
+    }).then((response)=>response.json()).then((data) => responseData=data).catch(error=> console.log("Error occured",error))
 
     if(responseData.success){
       localStorage.setItem('auth-token',responseData.token);
@@ -46,7 +46,7 @@ const LoginSignup = () => {
         'Content-Type' : 'application/json',
       },
       body: JSON.stringify(formData),
-    }).then((response)=>response.json()).then((data) => responseData=data)
+    }).then((response)=>response.json()).then((data) => responseData=data).catch(error=> console.log("Error:",error))
 
     if(responseData.success){
       localStorage.setItem('auth-token',responseData.token);

@@ -3,6 +3,10 @@
    background: linear-gradient(180deg, rgb(180, 90, 240), white);
     display: flex;
 }
+.hero-right{
+    height: 50%;
+    max-width: 100%;
+}
 .hero-left{
     flex: 1;
     display: flex;
@@ -46,9 +50,7 @@
     font-weight: 500;
 
 }
-.hero-latest-btnL::after{
-    
-}
+
 .hero-right img{
     margin-top: 200px;
     margin-right: 200px;

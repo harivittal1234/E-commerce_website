@@ -3,8 +3,7 @@ import './Hero.css'
 import hand_icon from '../Assets/hand_icon.png'
 import arrow_icon from '../Assets/arrow.png'
 import hero_image from '../Assets/hero_image.png'
-import king from '../Assets/OIP (3).jpeg'
-import king2 from '../Assets/OIP (4).jpeg'
+
 const hero = () => {
   return (
     <div className="hero">
@@ -12,10 +11,9 @@ const hero = () => {
             <h2>NEW ARRIVALS</h2>
             <div>
                 <div className="hand-hand-icon">
-                    <p>new</p>
-                    <img src={king2} alt='hand icon'/>
+                    <p>ALL NEW!!!</p>
+                    <img src={hand_icon} alt='hand icon'/>
                 </div>
-                <p>Nah, I'd Win</p>
             </div>
             <div className="hero-latest-btn">
                 <div>Latest Collection</div>
@@ -23,7 +21,7 @@ const hero = () => {
             </div>
         </div>
         <div className="hero-right">
-            <img src={king} alt="hero img" />
+            <img src={hero_image} alt="hero img" />
             
         </div>
         
